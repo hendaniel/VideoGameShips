@@ -39,7 +39,7 @@ public class Ship {
         positionY = this.INIT_Y;
         isJumping = false;
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.rock);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.navebuena);
         spriteShip  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteShip.getWidth()/2);

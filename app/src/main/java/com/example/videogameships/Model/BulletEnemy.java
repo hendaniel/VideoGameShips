@@ -32,7 +32,7 @@ public class BulletEnemy {
         positionX = this.INIT_X;
         positionY = randomGenerator.nextInt(500);
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.rock);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.laser);
         spriteBullet  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteBullet.getWidth()/2);
