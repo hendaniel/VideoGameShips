@@ -14,7 +14,7 @@ public class Rock {
     public static final float INIT_X =2000;
     public static final float INIT_Y =10;
     public static  int SPRITE_SIZE_WIDTH =150;
-    public static  int SPRITE_SIZE_HEIGTH=250;
+    public static  int SPRITE_SIZE_HEIGTH=150;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
     private float maxY;

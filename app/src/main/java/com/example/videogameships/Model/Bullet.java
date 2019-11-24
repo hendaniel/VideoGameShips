@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Bullet {
 
-    public static final float INIT_X =2000;
+    public static final float INIT_X =10;
     public static final float INIT_Y =10;
     public static  int SPRITE_SIZE_WIDTH =150;
     public static  int SPRITE_SIZE_HEIGTH=250;
@@ -25,12 +25,12 @@ public class Bullet {
     private boolean delete;
 
 
-    public Bullet (Context context, float screenWidth, float screenHeigth){
+    public Bullet (Context context, float screenWidth, float screenHeigth, float inity, float initx){
         delete = false;
         Random randomGenerator = new Random();
-        speed = randomGenerator.nextInt(8);
-        positionX = this.INIT_X;
-        positionY = randomGenerator.nextInt(500);
+        speed = 6;
+        positionX = initx;
+        positionY = inity;
         //Getting bitmap from resource
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.laserbueno);
         spriteBullet  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
@@ -87,8 +87,7 @@ public class Bullet {
     public void updateInfo () {
 
 
-        this.positionX -=speed;
-        System.out.println(this.getPositionX());
+        this.positionX +=speed;
         if(this.positionX <= 0) {
             this.delete = true;
         }

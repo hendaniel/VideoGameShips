@@ -20,6 +20,7 @@ import java.util.Random;
 public class GameView extends SurfaceView implements Runnable {
 
     private boolean isPlaying;
+    private boolean isDead;
     private Ship ship;
     private Paint paint;
     private Canvas canvas;
@@ -29,13 +30,16 @@ public class GameView extends SurfaceView implements Runnable {
     private ArrayList<Rock> rocks;
     private ArrayList<Bullet> bullets;
     private ArrayList<BulletEnemy> bulletsEnemies;
-    private int randomAdult;
     public Context contextGlobal;
     public float screenWithGlobal;
-    public int counter;
+    private int counter;
+    private int counterBullet;
+
+    public int life;
     public int aumentarDificultad;
     public int disminuirDificultad;
     public float screenHeightGlobal;
+
 
     /**
      * Contructor
@@ -45,7 +49,9 @@ public class GameView extends SurfaceView implements Runnable {
     public GameView(Context context, float screenWith, float screenHeight) {
         super(context);
         // Inicializar contador y arreglos de objetos
+        life = 100;
         counter = 0;
+        counterBullet = 0;
         ship = new Ship(context, screenWith, screenHeight);
         rocks = new ArrayList<>();
         enemies = new ArrayList<>();
@@ -61,6 +67,7 @@ public class GameView extends SurfaceView implements Runnable {
         paint = new Paint();
         holder = getHolder();
         isPlaying = true;
+        isDead = false;
     }
 
     /**
@@ -69,6 +76,9 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (isPlaying) {
+            randomShipEnemy();
+            randomRock();
+            paintBullet();
             paintFrame();
             updateInfo();
             verifyCollition();
@@ -79,28 +89,52 @@ public class GameView extends SurfaceView implements Runnable {
     private void verifyCollition(){
         for(int i = 0; i < rocks.size() ; i++){
             if(ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= rocks.get(i).getPositionX() && Math.abs(ship.getPositionY() - rocks.get(i).getPositionY()) < Rock.SPRITE_SIZE_HEIGTH){
-                counter++;
+                isDead = true;
                 rocks.remove(rocks.get(i));
             }
         }
         for(int i = 0; i < enemies.size() ; i++){
             if(ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= enemies.get(i).getPositionX() && Math.abs(ship.getPositionY() - enemies.get(i).getPositionY()) < EnemyShip.SPRITE_SIZE_HEIGTH){
-                counter--;
+                isDead = true;
                 enemies.remove(enemies.get(i));
             }
         }
         for(int i = 0; i < bulletsEnemies.size() ; i++){
             if(ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= bulletsEnemies.get(i).getPositionX() && Math.abs(ship.getPositionY() - bulletsEnemies.get(i).getPositionY()) < BulletEnemy.SPRITE_SIZE_HEIGTH){
+                life -= 15;
+                if(life <= 0){
+                    isDead = true;
+                }
                 bulletsEnemies.remove(bulletsEnemies.get(i));
             }
         }
-        for(int i = 0; i < bullets.size() ; i++){
-            if(ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= bullets.get(i).getPositionX() && Math.abs(ship.getPositionY() - bullets.get(i).getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH){
-                counter--;
-                bullets.remove(bullets.get(i));
-
+        for(int i = 0; i < bullets.size() ; i++) {
+            for (int j = 0; j < bulletsEnemies.size(); j++) {
+                if (bullets.get(i).getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= bulletsEnemies.get(j).getPositionX() && Math.abs(bullets.get(i).getPositionY() - bulletsEnemies.get(j).getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
+                    bullets.remove(bullets.get(i));
+                    bulletsEnemies.remove(bulletsEnemies.get(j));
+                }
             }
         }
+        for(int i = 0; i < bullets.size() ; i++) {
+            for (int j = 0; j < rocks.size(); j++) {
+                if (bullets.get(i).getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= rocks.get(j).getPositionX() && Math.abs(bullets.get(i).getPositionY() - rocks.get(j).getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
+                    counter++;
+                    rocks.remove(rocks.get(j));
+                    bullets.remove(bullets.get(i));
+                }
+            }
+        }
+        for(int i = 0; i < bullets.size() ; i++) {
+            for (int j = 0; j < enemies.size(); j++) {
+                if (bullets.get(i).getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= enemies.get(j).getPositionX() && Math.abs(bullets.get(i).getPositionY() - enemies.get(j).getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
+                    counter++;
+                    enemies.remove(enemies.get(j));
+                    bullets.remove(bullets.get(i));
+                }
+            }
+        }
+
     }
 
     private void randomShipEnemy() {
@@ -128,7 +162,13 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    private void bullet() {
+    private void paintBullet() {
+        counterBullet++;
+        if(counterBullet == 150){
+            Bullet bullet = new Bullet(contextGlobal, screenHeightGlobal, screenHeightGlobal, this.ship.getPositionY() , Ship.SPRITE_SIZE_WIDTH);
+            bullets.add(bullet);
+            counterBullet = 0;
+        }
     }
 
     private void updateInfo() {
@@ -137,28 +177,26 @@ public class GameView extends SurfaceView implements Runnable {
             bulletsEnemies.get(i).updateInfo();
             if(bulletsEnemies.get(i).getBorrar()) {
                 bulletsEnemies.remove(bulletsEnemies.get(i));
-                i--;
             }
         }
         for(int i = 0; i < rocks.size() ; i++){
             rocks.get(i).updateInfo();
             if(rocks.get(i).getBorrar()) {
                 rocks.remove(rocks.get(i));
-                i--;
+                counter--;
             }
         }
         for(int i = 0; i < bullets.size() ; i++){
             bullets.get(i).updateInfo();
             if(bullets.get(i).getBorrar()) {
                 bullets.remove(bullets.get(i));
-                i--;
             }
         }
         for(int i = 0; i < enemies.size() ; i++){
             enemies.get(i).updateInfo();
             if(enemies.get(i).getBorrar()) {
                 enemies.remove(enemies.get(i));
-                i--;
+                counter--;
             }
         }
     }
