@@ -163,7 +163,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void randomShipEnemy() {
         Random random = new Random();
         int ran = random.nextInt(1000);
-        if (ran <= 3) {
+        if (ran <= 10) {
             EnemyShip enemie = new EnemyShip(contextGlobal, screenWithGlobal, screenHeightGlobal);
             enemies.add(enemie);
         }
@@ -180,15 +180,18 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void paintBulletEnemy() {
         counterBulletEnemy++;
-        if (counterBulletEnemy == 300) {
-            for(int i = 0; i < enemies.size(); i++){
-                EnemyShip pos = enemies.get(i);
-                BulletEnemy bulletEnemy = new BulletEnemy(contextGlobal, screenWithGlobal, screenHeightGlobal, pos.getPositionY(), pos.getPositionX(), pos.getSpeed() + 2);
+        if (counterBulletEnemy == 150) {
+            if (enemies.size() > 0) {
+                Random random = new Random();
+                int ran = random.nextInt(enemies.size());
+                EnemyShip pos = enemies.get(ran);
+                BulletEnemy bulletEnemy = new BulletEnemy(contextGlobal, screenWithGlobal, screenHeightGlobal, pos.getPositionY(), pos.getPositionX(), pos.getSpeed() + 3);
                 bulletsEnemies.add(bulletEnemy);
                 counterBulletEnemy = 0;
             }
         }
     }
+
 
     private void paintBullet() {
         counterBullet++;
