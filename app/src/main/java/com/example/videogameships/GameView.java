@@ -115,7 +115,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < bulletsEnemies.size(); j++) {
-                if (bullets.get(i).getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= bulletsEnemies.get(j).getPositionX() && Math.abs(bullets.get(i).getPositionY() - bulletsEnemies.get(j).getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
+                Bullet bull = bullets.get(i);
+                BulletEnemy bulle = bulletsEnemies.get(j);
+                if (bull.getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= bulle.getPositionX() && Math.abs(bull.getPositionY() - bulle.getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
                     bullets.remove(bullets.get(i));
                     bulletsEnemies.remove(bulletsEnemies.get(j));
                     if (i != 0) i--;
@@ -127,7 +129,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < rocks.size(); j++) {
-                if (bullets.get(i).getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= rocks.get(j).getPositionX() && Math.abs(bullets.get(i).getPositionY() - rocks.get(j).getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
+                Bullet bull = bullets.get(i);
+                Rock rock = rocks.get(j);
+                if (bull.getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= rock.getPositionX() && Math.abs(bull.getPositionY() - rock.getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
                     counter++;
                     rocks.remove(rocks.get(j));
                     bullets.remove(bullets.get(i));
@@ -140,7 +144,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < enemies.size(); j++) {
-                if (bullets.get(i).getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= enemies.get(j).getPositionX() && Math.abs(bullets.get(i).getPositionY() - enemies.get(j).getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
+                Bullet bull = bullets.get(i);
+                EnemyShip enemy = enemies.get(j);
+                if (bull.getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= enemy.getPositionX() && Math.abs(bull.getPositionY() - enemy.getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
                     counter++;
                     enemies.remove(enemies.get(j));
                     bullets.remove(bullets.get(i));
@@ -166,7 +172,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void randomRock() {
         Random random = new Random();
         int ran = random.nextInt(1000);
-        if (ran <= 4) {
+        if (ran <= 3) {
             Rock rock = new Rock(contextGlobal, screenWithGlobal, screenHeightGlobal);
             rocks.add(rock);
         }
@@ -174,9 +180,10 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void paintBulletEnemy() {
         counterBulletEnemy++;
-        if (counterBulletEnemy == 100) {
+        if (counterBulletEnemy == 300) {
             for(int i = 0; i < enemies.size(); i++){
-                BulletEnemy bulletEnemy = new BulletEnemy(contextGlobal, screenWithGlobal, screenHeightGlobal, this.enemies.get(i).getPositionY(), this.enemies.get(i).getPositionX(), this.enemies.get(i).getSpeed()+2);
+                EnemyShip pos = enemies.get(i);
+                BulletEnemy bulletEnemy = new BulletEnemy(contextGlobal, screenWithGlobal, screenHeightGlobal, pos.getPositionY(), pos.getPositionX(), pos.getSpeed() + 2);
                 bulletsEnemies.add(bulletEnemy);
                 counterBulletEnemy = 0;
             }
