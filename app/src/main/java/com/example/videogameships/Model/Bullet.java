@@ -12,8 +12,8 @@ public class Bullet {
 
     public static final float INIT_X =10;
     public static final float INIT_Y =10;
-    public static  int SPRITE_SIZE_WIDTH =150;
-    public static  int SPRITE_SIZE_HEIGTH=250;
+    public static  int SPRITE_SIZE_WIDTH =200;
+    public static  int SPRITE_SIZE_HEIGTH=100;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
     private float maxY;
@@ -88,7 +88,7 @@ public class Bullet {
 
 
         this.positionX +=speed;
-        if(this.positionX <= 0) {
+        if(this.positionX >= 2000) {
             this.delete = true;
         }
     }

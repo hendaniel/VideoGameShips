@@ -12,8 +12,8 @@ public class BulletEnemy {
 
     public static final float INIT_X =2000;
     public static final float INIT_Y =10;
-    public static  int SPRITE_SIZE_WIDTH =150;
-    public static  int SPRITE_SIZE_HEIGTH=250;
+    public static  int SPRITE_SIZE_WIDTH =200;
+    public static  int SPRITE_SIZE_HEIGTH=100;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
     private float maxY;
@@ -25,16 +25,13 @@ public class BulletEnemy {
     private boolean delete;
 
 
-    public BulletEnemy (Context context, float screenWidth, float screenHeigth){
+    public BulletEnemy (Context context, float screenWidth, float screenHeigth, float inity, float initx, float initspeed){
         delete = false;
-        Random randomGenerator = new Random();
-        speed = randomGenerator.nextInt(8);
-        positionX = this.INIT_X;
-        positionY = randomGenerator.nextInt(500);
-        //Getting bitmap from resource
+        speed = initspeed;
+        positionX = initx;
+        positionY = inity;
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.laser);
         spriteBullet  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
         this.maxX = screenWidth - (spriteBullet.getWidth()/2);
         this.maxY = screenHeigth - spriteBullet.getHeight();
     }
@@ -88,7 +85,6 @@ public class BulletEnemy {
 
 
         this.positionX -=speed;
-        System.out.println(this.getPositionX());
         if(this.positionX <= 0) {
             this.delete = true;
         }
