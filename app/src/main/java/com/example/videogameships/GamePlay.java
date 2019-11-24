@@ -8,7 +8,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GamePlay extends AppCompatActivity {
+public class  GamePlay extends AppCompatActivity {
 
     private GameView gameSurfaceView;
 
