@@ -33,7 +33,7 @@ public class EnemyShip {
         positionX = this.INIT_X;
         positionY = randomGenerator.nextInt(500);
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.rock);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.naveenemiga);
         spriteEnemie  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteEnemie.getWidth()/2);
