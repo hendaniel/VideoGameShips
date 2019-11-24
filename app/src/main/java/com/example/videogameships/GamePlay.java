@@ -14,7 +14,7 @@ public class GamePlay extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_game_play);
+        setContentView(R.layout.activity_game_play);
         // Force the screen to use the landscape orintation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         Display display = getWindowManager().getDefaultDisplay();

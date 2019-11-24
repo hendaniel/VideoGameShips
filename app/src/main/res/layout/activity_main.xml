@@ -4,15 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/stars"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/titleImage"
+        android:layout_width="339dp"
+        android:layout_height="143dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/menutitle" /><![CDATA[
+
+    app:layout_constraintStart_toEndOf="@+id/difficultyImage"
+        app:layout_constraintTop_toBottomOf="@+id/playButton" />
+
+
+
+    ]]>
+
+    <Button
+        android:id="@+id/difficultyButton"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="84dp"
+        android:background="@drawable/round_button"
+        android:text="Difficulty"
+        app:layout_constraintStart_toEndOf="@+id/difficultyImage"
+        app:layout_constraintTop_toBottomOf="@+id/playButton" />
+
+    <ImageView
+        android:id="@+id/difficultyImage"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="84dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playImage"
+        app:srcCompat="@drawable/dificult" />
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="108dp"
+        android:background="@drawable/round_button"
+        android:text="Play"
+        android:onClick="playGame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleImage" />
+
+    <ImageView
+        android:id="@+id/playImage"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="128dp"
+        app:layout_constraintEnd_toStartOf="@+id/playButton"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleImage"
+        app:srcCompat="@drawable/play" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
