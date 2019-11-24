@@ -11,14 +11,8 @@ import java.util.Random;
 
 public class EnemyShip {
 
-    public static final float INIT_X =2000;
-    public static final float INIT_Y =10;
-    public static  int SPRITE_SIZE_WIDTH =150;
-    public static  int SPRITE_SIZE_HEIGTH=250;
-    private final int MIN_SPEED = 1;
-    private final int MAX_SPEED = 20;
-    private float maxY;
-    private float maxX;
+    public static  int SPRITE_SIZE_WIDTH =200;
+    public static  int SPRITE_SIZE_HEIGTH=200;
     private float speed;
     private float positionX;
     private float positionY;
@@ -30,24 +24,12 @@ public class EnemyShip {
         delete = false;
         Random randomGenerator = new Random();
         speed = randomGenerator.nextInt(8);
-        positionX = this.INIT_X;
-        positionY = randomGenerator.nextInt(600);
-        //Getting bitmap from resource
+        positionX = screenWidth;
+        positionY = randomGenerator.nextInt((int)screenHeigth - SPRITE_SIZE_HEIGTH);
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.naveenemiga);
         spriteEnemie  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-        this.maxX = screenWidth - (spriteEnemie.getWidth()/2);
-        this.maxY = screenHeigth - spriteEnemie.getHeight();
     }
 
-
-    public static float getInitX() {
-        return INIT_X;
-    }
-
-    public static float getInitY() {
-        return INIT_Y;
-    }
 
     public float getSpeed() {
         return speed;

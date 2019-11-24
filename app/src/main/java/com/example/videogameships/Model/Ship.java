@@ -10,8 +10,8 @@ public class Ship {
 
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
-    public static  int SPRITE_SIZE_WIDTH =300;
-    public static  int SPRITE_SIZE_HEIGTH=300;
+    public static  int SPRITE_SIZE_WIDTH =250;
+    public static  int SPRITE_SIZE_HEIGTH=250;
     public static final float GRAVITY_FORCE=10;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
@@ -38,7 +38,6 @@ public class Ship {
         positionX = this.INIT_X;
         positionY = this.INIT_Y;
         isJumping = false;
-        //Getting bitmap from resource
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.navebuena);
         spriteShip  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 

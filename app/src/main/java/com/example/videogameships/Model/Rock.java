@@ -11,14 +11,8 @@ import java.util.Random;
 
 public class Rock {
 
-    public static final float INIT_X =2000;
-    public static final float INIT_Y =10;
     public static  int SPRITE_SIZE_WIDTH =150;
     public static  int SPRITE_SIZE_HEIGTH=150;
-    private final int MIN_SPEED = 1;
-    private final int MAX_SPEED = 20;
-    private float maxY;
-    private float maxX;
     private float speed;
     private float positionX;
     private float positionY;
@@ -30,24 +24,13 @@ public class Rock {
         delete = false;
         Random randomGenerator = new Random();
         speed = randomGenerator.nextInt(8);
-        positionX = this.INIT_X;
-        positionY = randomGenerator.nextInt(600);
-        //Getting bitmap from resource
+        positionX = screenWidth;
+        positionY = randomGenerator.nextInt((int)screenHeigth - SPRITE_SIZE_HEIGTH);
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.rock);
         spriteRock  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteRock.getWidth()/2);
-        this.maxY = screenHeigth - spriteRock.getHeight();
     }
 
-
-    public static float getInitX() {
-        return INIT_X;
-    }
-
-    public static float getInitY() {
-        return INIT_Y;
-    }
 
     public float getSpeed() {
         return speed;

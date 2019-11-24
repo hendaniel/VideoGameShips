@@ -6,46 +6,27 @@ import android.graphics.BitmapFactory;
 
 import com.example.videogameships.R;
 
-import java.util.Random;
-
 public class Bullet {
 
-    public static final float INIT_X =10;
-    public static final float INIT_Y =10;
     public static  int SPRITE_SIZE_WIDTH =200;
     public static  int SPRITE_SIZE_HEIGTH=100;
-    private final int MIN_SPEED = 1;
-    private final int MAX_SPEED = 20;
-    private float maxY;
-    private float maxX;
     private float speed;
     private float positionX;
     private float positionY;
     private Bitmap spriteBullet;
     private boolean delete;
+    private float screenWidth;
 
 
     public Bullet (Context context, float screenWidth, float screenHeigth, float inity, float initx){
+        this.screenWidth = screenWidth;
         delete = false;
-        Random randomGenerator = new Random();
-        speed = 6;
+        speed = 10;
         positionX = initx;
         positionY = inity;
-        //Getting bitmap from resource
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.laserbueno);
         spriteBullet  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteBullet.getWidth()/2);
-        this.maxY = screenHeigth - spriteBullet.getHeight();
-    }
-
-
-    public static float getInitX() {
-        return INIT_X;
-    }
-
-    public static float getInitY() {
-        return INIT_Y;
     }
 
     public float getSpeed() {
@@ -88,7 +69,7 @@ public class Bullet {
 
 
         this.positionX +=speed;
-        if(this.positionX >= 2000) {
+        if(this.positionX >= screenWidth) {
             this.delete = true;
         }
     }

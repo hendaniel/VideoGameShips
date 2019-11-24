@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,6 +22,8 @@ import java.util.Random;
 
 public class GameView extends SurfaceView implements Runnable {
 
+    public static int difficultRandom;
+    public static boolean difficult;
     private boolean isPlaying;
     private boolean isDead;
     private Ship ship;
@@ -80,7 +83,9 @@ public class GameView extends SurfaceView implements Runnable {
             randomShipEnemy();
             randomRock();
             paintBullet();
-            paintBulletEnemy();
+            if (difficult) {
+                paintBulletEnemy();
+            }
             paintFrame();
             updateInfo();
             verifyCollition();
@@ -92,49 +97,14 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void verifyCollition() {
-        for (int i = 0; i < rocks.size(); i++) {
-            if (ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= rocks.get(i).getPositionX() && Math.abs(ship.getPositionY() - rocks.get(i).getPositionY()) < Rock.SPRITE_SIZE_HEIGTH) {
-                isDead = true;
-                rocks.remove(rocks.get(i));
-            }
-        }
-        for (int i = 0; i < enemies.size(); i++) {
-            if (ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= enemies.get(i).getPositionX() && Math.abs(ship.getPositionY() - enemies.get(i).getPositionY()) < EnemyShip.SPRITE_SIZE_HEIGTH) {
-                isDead = true;
-                enemies.remove(enemies.get(i));
-            }
-        }
-        for (int i = 0; i < bulletsEnemies.size(); i++) {
-            if (ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= bulletsEnemies.get(i).getPositionX() && Math.abs(ship.getPositionY() - bulletsEnemies.get(i).getPositionY()) < BulletEnemy.SPRITE_SIZE_HEIGTH) {
-                life -= 15;
-                if (life <= 0) {
-                    isDead = true;
-                }
-                bulletsEnemies.remove(bulletsEnemies.get(i));
-            }
-        }
-        for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < bulletsEnemies.size(); j++) {
-                Bullet bull = bullets.get(i);
-                BulletEnemy bulle = bulletsEnemies.get(j);
-                if (bull.getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= bulle.getPositionX() && Math.abs(bull.getPositionY() - bulle.getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
-                    bullets.remove(bullets.get(i));
-                    bulletsEnemies.remove(bulletsEnemies.get(j));
-                    if (i != 0) i--;
-                    else break;
-                    if (j != 0) j--;
-                    else break;
-                }
-            }
-        }
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < rocks.size(); j++) {
                 Bullet bull = bullets.get(i);
                 Rock rock = rocks.get(j);
                 if (bull.getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= rock.getPositionX() && Math.abs(bull.getPositionY() - rock.getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
                     counter++;
-                    rocks.remove(rocks.get(j));
-                    bullets.remove(bullets.get(i));
+                    rocks.remove(rock);
+                    bullets.remove(bull);
                     if (i != 0) i--;
                     else break;
                     if (j != 0) j--;
@@ -148,8 +118,46 @@ public class GameView extends SurfaceView implements Runnable {
                 EnemyShip enemy = enemies.get(j);
                 if (bull.getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= enemy.getPositionX() && Math.abs(bull.getPositionY() - enemy.getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
                     counter++;
-                    enemies.remove(enemies.get(j));
-                    bullets.remove(bullets.get(i));
+                    enemies.remove(enemy);
+                    bullets.remove(bull);
+                    if (i != 0) i--;
+                    else break;
+                    if (j != 0) j--;
+                    else break;
+                }
+            }
+        }
+        for (int i = 0; i < rocks.size(); i++) {
+            Rock rock = rocks.get(i);
+            if (ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= rock.getPositionX() && Math.abs(ship.getPositionY() - rock.getPositionY()) < Rock.SPRITE_SIZE_HEIGTH) {
+                isDead = true;
+                rocks.remove(rock);
+            }
+        }
+        for (int i = 0; i < enemies.size(); i++) {
+            EnemyShip enemy = enemies.get(i);
+            if (ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= enemy.getPositionX() && Math.abs(ship.getPositionY() - enemy.getPositionY()) < EnemyShip.SPRITE_SIZE_HEIGTH) {
+                isDead = true;
+                enemies.remove(enemy);
+            }
+        }
+        for (int i = 0; i < bulletsEnemies.size(); i++) {
+            BulletEnemy bullet = bulletsEnemies.get(i);
+            if (ship.getPositionX() + Ship.SPRITE_SIZE_WIDTH >= bullet.getPositionX() && Math.abs(ship.getPositionY() - bullet.getPositionY()) < BulletEnemy.SPRITE_SIZE_HEIGTH) {
+                life -= 15;
+                if (life <= 0) {
+                    isDead = true;
+                }
+                bulletsEnemies.remove(bullet);
+            }
+        }
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < bulletsEnemies.size(); j++) {
+                Bullet bull = bullets.get(i);
+                BulletEnemy bulle = bulletsEnemies.get(j);
+                if (bull.getPositionX() + Bullet.SPRITE_SIZE_WIDTH >= bulle.getPositionX() && Math.abs(bull.getPositionY() - bulle.getPositionY()) < Bullet.SPRITE_SIZE_HEIGTH) {
+                    bullets.remove(bull);
+                    bulletsEnemies.remove(bulle);
                     if (i != 0) i--;
                     else break;
                     if (j != 0) j--;
@@ -163,7 +171,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void randomShipEnemy() {
         Random random = new Random();
         int ran = random.nextInt(1000);
-        if (ran <= 10) {
+        if (ran <= difficultRandom) {
             EnemyShip enemie = new EnemyShip(contextGlobal, screenWithGlobal, screenHeightGlobal);
             enemies.add(enemie);
         }
@@ -172,7 +180,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void randomRock() {
         Random random = new Random();
         int ran = random.nextInt(1000);
-        if (ran <= 3) {
+        if (ran <= difficultRandom) {
             Rock rock = new Rock(contextGlobal, screenWithGlobal, screenHeightGlobal);
             rocks.add(rock);
         }
@@ -180,12 +188,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void paintBulletEnemy() {
         counterBulletEnemy++;
-        if (counterBulletEnemy == 150) {
+        if (counterBulletEnemy > 120 && counterBulletEnemy < 150) {
             if (enemies.size() > 0) {
                 Random random = new Random();
                 int ran = random.nextInt(enemies.size());
                 EnemyShip pos = enemies.get(ran);
-                BulletEnemy bulletEnemy = new BulletEnemy(contextGlobal, screenWithGlobal, screenHeightGlobal, pos.getPositionY(), pos.getPositionX(), pos.getSpeed() + 3);
+                BulletEnemy bulletEnemy = new BulletEnemy(contextGlobal, screenWithGlobal, screenHeightGlobal, pos.getPositionY() + EnemyShip.SPRITE_SIZE_HEIGTH / 2 - BulletEnemy.SPRITE_SIZE_HEIGTH / 2, pos.getPositionX() - EnemyShip.SPRITE_SIZE_WIDTH, pos.getSpeed() + 3);
                 bulletsEnemies.add(bulletEnemy);
                 counterBulletEnemy = 0;
             }
@@ -195,10 +203,13 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void paintBullet() {
         counterBullet++;
-        if (counterBullet == 100) {
+        if (counterBullet == 50) {
             Bullet bullet = new Bullet(contextGlobal, screenWithGlobal, screenHeightGlobal, this.ship.getPositionY() + Ship.SPRITE_SIZE_HEIGTH / 2 - Bullet.SPRITE_SIZE_HEIGTH / 2, Ship.SPRITE_SIZE_WIDTH);
             bullets.add(bullet);
             counterBullet = 0;
+//            MediaPlayer mediaPlayer = MediaPlayer.create(contextGlobal, R.raw.laser);
+//            mediaPlayer.setDisplay(holder);
+//            mediaPlayer.start();
         }
     }
 
@@ -237,7 +248,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.BLACK);
             Bitmap originalBitmap = BitmapFactory.decodeResource(contextGlobal.getResources(), R.drawable.gameover);
-            canvas.drawBitmap(originalBitmap, 100, 100, paint);
+            canvas.drawBitmap(originalBitmap, 200, 200, paint);
             holder.unlockCanvasAndPost(canvas);
         }
     }
@@ -261,14 +272,14 @@ public class GameView extends SurfaceView implements Runnable {
             }
             Paint paintCounter = new Paint();
             paintCounter.setColor(Color.WHITE);
-            paintCounter.setTextSize(100);
+            paintCounter.setTextSize(80);
             paintCounter.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText("Puntos: " + counter + "", 1200, 100, paintCounter);
+            canvas.drawText("Puntos: " + counter + "", screenWithGlobal - screenWithGlobal / 4, 100, paintCounter);
             Paint paintLife = new Paint();
             paintLife.setColor(Color.WHITE);
-            paintLife.setTextSize(100);
+            paintLife.setTextSize(80);
             paintLife.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText("Vida: " + life + "", 400, 100, paintLife);
+            canvas.drawText("Vida: " + life + "", screenWithGlobal - screenWithGlobal / 2, 100, paintLife);
             holder.unlockCanvasAndPost(canvas);
         }
 

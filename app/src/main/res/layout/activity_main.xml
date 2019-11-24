@@ -82,7 +82,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:onClick="putEasy"
+            android:id="@+id/easy"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:buttonTint="#FFEB3B"
@@ -90,7 +91,8 @@
             android:textColor="#FFEB3B" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:onClick="putMedium"
+            android:id="@+id/medium"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:buttonTint="#FFEB3B"
@@ -98,7 +100,8 @@
             android:textColor="#FFEB3B" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:onClick="putHard"
+            android:id="@+id/hard"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:buttonTint="#FFEB3B"
